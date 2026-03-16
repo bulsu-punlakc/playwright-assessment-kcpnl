@@ -1,0 +1,36 @@
+{
+    "user": {
+        "username": "Admin",
+        "password": "admin123"
+    },
+    "vacancies": [
+        {
+            "vacancyName": "2022100593",
+            "jobTitle": "Chief Executive Officer",
+            "description": "Lorem ipsum dolor sit amet",
+            "hiringManager": "Ranga Akunuri",
+            "noOfPositions": "16",
+            "isActive": true,
+            "allowPublish": false
+        }
+    ],
+    "candidates": [
+        {
+            "firstName": "Keith Christopher",
+            "middleName": "N/A",
+            "lastName": "Punla",
+            "vacancy": "2022100593",
+            "email": "keithchrist24@gmail.com",
+            "contact": "09452046477",
+            "resumePath": "",
+            "keywords": "Pogi, Astig",
+            "dateOfApplication": "2026-16-03",
+            "notes": "Pogi po ito",
+            "interview": {
+                "title": "Initial Interview",
+                "interviewer": "Ranga Akunuri",
+                "date": "2026-20-03"
+            }
+        }
+    ]
+}
