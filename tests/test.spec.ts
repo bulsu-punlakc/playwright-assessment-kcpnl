@@ -21,16 +21,16 @@ test('Recruitment Process', async ({ page }) => {
     });
 
     // // 1. Add Vacancy
-    // await test.step(`Add New Vacancy: ${vacancyData.vacancyName}`, async () => {
-    //     await app.navigate('Recruitment');
-    //     await app.navigate('Vacancies');
-    //     await vacancy.fillVacancyForm(vacancyData);
-    // });
+    await test.step(`Add New Vacancy: ${vacancyData.vacancyName}`, async () => {
+         await app.navigate('Recruitment');
+         await app.navigate('Vacancies');
+         await vacancy.fillVacancyForm(vacancyData);
+    });
 
     // // 1.5. Verify Newly Added Vacancy
-    // await test.step(`Validate Vacancy: ${vacancyData.vacancyName}`, async () => {
-    //     await vacancy.validateVacancy(vacancyData);
-    // });
+    await test.step(`Validate Vacancy: ${vacancyData.vacancyName}`, async () => {
+        await vacancy.validateVacancy(vacancyData);
+    });
 
     // 2. Add Candidate
     await test.step(`Add New Candidate: ${candidateData.firstName}`, async () => {
