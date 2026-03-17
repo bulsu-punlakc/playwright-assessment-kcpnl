@@ -17,23 +17,23 @@ export class App {
         this.usernameLoginText = page.getByPlaceholder('Username');
         this.passwordLoginText = page.getByPlaceholder('Password');
         this.loginButton = page.getByRole('button', { name: 'Login' });
-    }
+    };
 
     async login(credentials: LoginCredentials) {
         await this.usernameLoginText.fill(credentials.username);
         await this.passwordLoginText.fill(credentials.password);
         await this.loginButton.click();
-    }
+    };
 
     async navigate(option: String) {
         const link = this.page.getByRole('link', { name: `${option}` });
         await link.waitFor();
         await link.click();
-    }
+    };
 
     async clickButton(buttonText: String) {
-        const button = this.page.getByRole('button', { name: `${buttonText}` }).first();
+        const button = this.page.getByRole('button', { name: `${buttonText}`.trim() });
         await button.waitFor({ state: 'visible' });
         await button.click();
-    }
+    };
 };

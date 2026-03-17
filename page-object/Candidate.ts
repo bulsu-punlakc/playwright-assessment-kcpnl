@@ -24,7 +24,6 @@ export interface CandidateDetails {
 export class Candidate {
     page: Page;
     app: App;
-    addCandidateButton: Locator;
 
     firstNameInput: Locator;
     middleNameInput: Locator;
@@ -43,11 +42,10 @@ export class Candidate {
     constructor (page: Page) {
         this.page = page;
         this.app = new App(this.page);
-        this.addCandidateButton = page.getByRole('button', { name: 'Add' });
 
-        this.firstNameInput = page.locator(`//input[contains(@placeholder, 'First Name')]`);
-        this.middleNameInput = page.locator(`//input[contains(@placeholder, 'Middle Name')]`);
-        this.lastNameInput = page.locator(`//input[contains(@placeholder, 'Last Name')]`);
+        this.firstNameInput = page.getByPlaceholder('First Name');
+        this.middleNameInput = page.getByRole('textbox', { name: 'Middle Name' });
+        this.lastNameInput = page.getByPlaceholder('Last Name');
         
         this.vacancyDropdown = page.locator('.oxd-select-text').first();
 
@@ -65,19 +63,19 @@ export class Candidate {
     };
 
     async fillCandidateForm(candidateDetails: CandidateDetails) {
-        await this.addCandidateButton.click();
-        
-        const formContainer = this.page.locator('form.oxd-form')
-        await formContainer.waitFor({ state: 'visible', timeout: 5000 })
+        await this.app.clickButton('Add');
 
+        const form = this.page.locator('form.oxd-form');
+        await form.waitFor({ state: 'visible', timeout: 5000 });
+
+        await this.firstNameInput.waitFor({ state: 'visible', timeout: 5000 });
         await this.firstNameInput.fill(candidateDetails.firstName);
+
+        await this.lastNameInput.waitFor({ state: 'visible' });
         await this.lastNameInput.fill(candidateDetails.lastName);
 
         await this.vacancyDropdown.click();
-        const vacancyOption = await this.page.getByText(candidateDetails.vacancy);
-        // await vacancyOption.scrollIntoViewIfNeeded();
-        await vacancyOption.waitFor({ state: 'visible', timeout: 5000 })
-        await vacancyOption.click();
+        await this.page.getByText(candidateDetails.vacancy).click();
 
         await this.emailInput.fill(candidateDetails.email);
         await this.contactInput.fill(candidateDetails.contact);
@@ -89,19 +87,28 @@ export class Candidate {
 
         await this.notesInput.fill(candidateDetails.notes);
     
-        await this.app.clickButton('Save');
-        await this.page.waitForTimeout(3000);
+        await this.saveButton.click();
     };
 
-    async validateCandidate(candidateDetails: CandidateDetails) {
+    async searchAndOpenCandidate(candidateVacancy: string) {
         await this.app.navigate('Candidates');
-        await this.page.locator('div.oxd-table-body').waitFor({ state: 'visible' });
-        await expect(this.page.locator(`//div[contains(@class, 'oxd-table-row')]//div[text()='${candidateDetails.vacancy}']`)).toBeVisible();
-    }
+        await this.page.getByText('-- Select --').nth(1).click();
+        await this.page.getByRole('listbox').getByText(candidateVacancy).click();
+        await this.page.getByRole('button', { name: 'Search' }).click();
+        await this.page.locator('//button[contains(@class,"oxd-icon-button")]').nth(3).click();
+        await this.page.getByRole('button', { name: 'Shortlist' }).waitFor({ state: 'visible' });
+    };
+
+    // async validateCandidate(candidateDetails: CandidateDetails) {
+    //     await this.app.navigate('Candidates');
+    //     await this.page.locator('div.oxd-table-body').waitFor({ state: 'visible' });
+    //     await expect(this.page.locator(`//div[contains(@class, 'oxd-table-row')]//div[text()='${candidateDetails.vacancy}']`)).toBeVisible();
+    // }
 
     async shortlistCurrentCandidate() {
         await this.app.clickButton('Shortlist');
         await this.app.clickButton('Save');
+        await this.page.getByText('Successfully Updated').click();
     };
 
     async scheduleInterviewOfCurrentCandidate(candidateDetails: CandidateDetails) {

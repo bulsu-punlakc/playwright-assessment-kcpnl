@@ -20,7 +20,7 @@ test('Recruitment Process', async ({ page }) => {
         await app.navigate('Recruitment');
     });
 
-    // 1. Add Vacancy
+    // // 1. Add Vacancy
     // await test.step(`Add New Vacancy: ${vacancyData.vacancyName}`, async () => {
     //     await app.navigate('Recruitment');
     //     await app.navigate('Vacancies');
@@ -35,12 +35,13 @@ test('Recruitment Process', async ({ page }) => {
     // 2. Add Candidate
     await test.step(`Add New Candidate: ${candidateData.firstName}`, async () => {
         await app.navigate('Candidates');
-        candidate.fillCandidateForm(candidateData);
+        await candidate.fillCandidateForm(candidateData);
     });
 
     // 2.5. Verify Newly Added Candidate
     await test.step(`Validate Candidate: ${candidateData.firstName}`, async () => {
-        await candidate.validateCandidate(candidateData);
+        // await candidate.validateCandidate(candidateData);
+        await candidate.searchAndOpenCandidate(candidateData.vacancy);
     });
 
     // 3. Shortlist Candidate
