@@ -99,12 +99,6 @@ export class Candidate {
         await this.page.getByRole('button', { name: 'Shortlist' }).waitFor({ state: 'visible' });
     };
 
-    // async validateCandidate(candidateDetails: CandidateDetails) {
-    //     await this.app.navigate('Candidates');
-    //     await this.page.locator('div.oxd-table-body').waitFor({ state: 'visible' });
-    //     await expect(this.page.locator(`//div[contains(@class, 'oxd-table-row')]//div[text()='${candidateDetails.vacancy}']`)).toBeVisible();
-    // }
-
     async shortlistCurrentCandidate() {
         await this.app.clickButton('Shortlist');
         await this.app.clickButton('Save');
